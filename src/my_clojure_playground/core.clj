@@ -1,9 +1,6 @@
 (ns my-clojure-playground.core)
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn spel-print [list] (map (fn [x] (symbol (name x))) list))
 
 (def objects '(whiskey-bottle bucket frog chain))
 
@@ -31,4 +28,23 @@
 
 (defn describe-location [location game-map]
   (first (location game-map)))
+
+(defn describe-path [path]
+  `(there is a ~(second path) going ~(first path) from here -))
+
+(defn describe-paths [location game-map]
+  (apply concat (map describe-path (rest (get game-map location)))))
+
+(defn is-at? [obj loc obj-loc] (= (obj obj-loc) loc))
+
+(defn describe-floor [loc objs obj-loc]
+  (apply concat (map (fn [x]
+                       `(you see a ~x on the floor - ))
+                     (filter (fn [x]
+                               (is-at? x loc obj-loc)) objs))))
+
+(defn look []
+  (spel-print (concat (describe-location location game-map)
+                      (describe-paths location game-map)
+                      (describe-floor location objects object-locations))))
 

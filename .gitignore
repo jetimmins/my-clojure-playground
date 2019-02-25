@@ -17,3 +17,5 @@ pom.xml.asc
 .idea*
 my-clojure-playground.iml
 resources/
+.idea/misc.xml
+.idea/workspace.xml
